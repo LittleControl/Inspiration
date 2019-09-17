@@ -1,0 +1,78 @@
+# JS中判断一个数组或者对象是否为空
+
+## 判断对象
+
+### 使用JSON相关方法
+
+```JavaScript
+let obj = {}
+let obj2 = { name: 'Little' }
+function isEmpty(obj) {
+    return JSON.stringify(obj) === '{}'
+}
+console.log(isEmpty(obj))//true
+console.log(isEmpty(obj2))//false
+```
+
+### 使用for...in方法
+
+```JavaScript
+function isEmpty2(obj) {
+    for (let i in obj) {
+        return false
+    }
+    return true
+}
+/* 注意这里for..in只能访问可枚举属性,当该对象上有类似于Symbol的属性的时候,该方法就会失效 */
+let obj3 = {}
+let sym = Symbol('Nothing')
+obj3[sym] = function() {
+    console.log(this[sym])
+}
+console.log(obj3)//{ [Symbol(Nothing)]: [Function] }
+console.log(isEmpty2(obj3))//true 方法失效
+```
+
+### 使用`Object.keys()`方法
+
+`Object.keys()`是ES6新增的方法.类似于`for...in`,同样对于`Symbol`的属性方法失效  
+简单来说,就是该方法返回一个对象可枚举的属性的key的一个数组
+
+```JavaScript
+function isEmpty3(obj) {
+    if(Object.keys(obj).length === 0) {
+        return true
+    }
+    return false
+}
+console.log(isEmpty3(obj3))//true
+```
+
+## 判断数组
+
+### 使用JSON
+
+```JavaScript
+let arr = []
+let arr2 = [1,2,'abc']
+function isEmptyArr(arr) {
+    return JSON.stringify(arr) === '[]'
+}
+console.log(isEmptyArr(arr))//true
+console.log(isEmptyArr(arr2))//fal  se
+```
+
+### 使用arr.length
+
+```JavaScript
+function isEmptyArr2(arr) {
+    return arr.length === 0
+}
+```
+
+## 总结及注意事项
+
+目前先就写这么多吧,需要注意的是,对于对象或者是数组而言,首先判断的不应该是否为空,而是时候是数组或者对象  
+数组的话的可以直接用`Array.isArray(arr)`来判断,而对于`Object`类型就比较复杂了一点,我会再写一篇关于怎么判断具体的数据类型的文章  
+关于判断数组或者对象是否为空的问题,随着小控的学习,以后肯定还会更新的  
+我所见的生命,都只是行过,无所谓完成,共勉!
