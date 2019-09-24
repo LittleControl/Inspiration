@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            border: 0;
+        }
+
+        /* body {
+            position: absolute;
+        } */
+
+        .box1 {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            position: fixed;
+            left: 49%;
+            top: 30%;
+        }
+
+        .box2 {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+        }
+
+        .box3 {
+            width: 200px;
+            height: 200px;
+            background-color: #bfa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <div class="box3"></div>
+    <script>
+        let box1 = document.getElementsByClassName('box1')
+        console.log(box1.style.position.left)
+    </script>
+</body>
+
+</html>

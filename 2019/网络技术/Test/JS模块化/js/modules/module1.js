@@ -1,9 +1,8 @@
-define([],function () {
-    console.log('module1 is running')
+define(function (require, exports, module) {
     let name = 'LittleControl'
-    let getName = () => {
-        //注意,这里不可以用this.name,否则就可能会出现一些奇奇怪该的BUG
+    console.log('Module1 is running')
+    function getName() {
         return name
     }
-    return {getName}
+    exports.getName = getName
 })

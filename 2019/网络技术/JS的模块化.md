@@ -85,3 +85,78 @@ define(['module2'],function (m2) {
 需要注意的是,这个`requireJS`的模块路径配置一直总感觉有问题,至今为止我都没有搞懂到底原理是是什么,如果你把`baseUrl`改为`js/modules`后,再把`path`里的`modules`去掉,发现就出问题了,还有就是引入类似与`JQuery`这样的第三方模块的时候也是很麻烦,这里就不做过多阐述
 
 ## CMD
+
+`CMD`里我们最常使用的库就是`seaJS`,好像是阿里写的这个,据说后来又卖给了别人,咱也不知道,咱也不敢问.`seaJS`的语法与`AMD`的语法类似,先给出`seaJS`的官方链接[seaJS](https://seajs.github.io/seajs/docs/).然后我们的目录结构于上文的`AMD`中的目录结构,只不过我们这里要用的是库是`sea.js`.`seaJS`的模块定义语法与`AMD`类似,也是用`define`来定义,只不过`define`可以有三个参数,`require,exports,module`,其中,`require`参数用于解决依赖关系,当这个模块依赖于其他模块的时候,就需要`require`来引入所依赖的模块.而`exports`和`module`主要用于向外暴露模块.
+
+```JavaScript
+//module1.js
+//因为module1模块不依赖于其他模块,所以也可以省略require参数
+define(function (require, exports, module) {
+    let name = 'LittleControl'
+    console.log('Module1 is running')
+    function getName() {
+        return name
+    }
+    exports.getName = getName
+})
+
+//module2.js
+define(function (require, exports, module) {
+    let website = 'www.littlecontrol.top'
+    console.log('Module2 is running')
+    let module1 = require('./module1')
+    function getFull() {
+        return module1.getName() + ' : ' + website
+    }
+    module.exports = getFull
+})
+
+//module3.js
+//这里使用了一个异步加载包,关于异步加载会在主模块之中说明
+define(function (require, exports, module) {
+    console.log('Module3 is running')
+    let age = 18
+    /* 注意这里要是异步加载模块2的时候,在回调函数里exports的值可能在main.js中拿不到  */
+    // require.async('./module2', function (module2) {
+    //     console.log('async module2 is finished')
+    //     console.log(module2)
+    //     exports.web = {
+    //         website: module2(),
+    //         age
+    //     }
+    // })
+
+    let module2 = require('./module2')
+    exports.web = {
+        website: module2(),
+        age
+    }
+})
+
+//app.js
+//因为主模块不需要向外暴露模块,所以就省略了exports和module参数
+define(function (require) {
+    // let module3 = require('./modules/module3')
+    // console.log(module3.web)
+    //这里使用异步加载模块的方式,可以不阻塞主线程的运行,异步加载模块的方法有两个参数
+    //第一个参数是要异步加载的模块,第二参数是一个回调函数,用于执行模块加载完成后的参数,其中回调函数的参数便是要加载的模块
+    require.async('./modules/module3', function (m3) {
+        console.log(m3)
+        console.log(typeof m3)
+        console.log(m3.web)
+    })
+})
+
+```
+
+```HTML
+//与AMD不同的是,在index.html使用CMD的方法,具体的script标签如下
+<script src="./js/libs/sea.js"></script>
+<script>
+    seajs.use('./js/app.js')
+</script>
+//即我们在引入seajs包之后,还有再使用seajs的use方法加载我们的主模块
+```
+
+输出结果如下
+![seaJS的输出结果](https://s2.ax1x.com/2019/09/24/uktP1J.png)

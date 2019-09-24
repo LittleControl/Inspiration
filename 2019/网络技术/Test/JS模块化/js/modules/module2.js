@@ -1,8 +1,9 @@
-define(['module1'],function(m1) {
-    console.log('module2 is running')
-    let age = 18
-    let getPerson = () => {
-        return m1.getName() + ' ' + age
+define(function (require, exports, module) {
+    let website = 'www.littlecontrol.top'
+    console.log('Module2 is running')
+    let module1 = require('./module1')
+    function getFull() {
+        return module1.getName() + ' : ' + website
     }
-    return getPerson
+    module.exports = getFull
 })
