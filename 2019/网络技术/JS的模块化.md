@@ -160,3 +160,152 @@ define(function (require) {
 
 输出结果如下
 ![seaJS的输出结果](https://s2.ax1x.com/2019/09/24/uktP1J.png)
+
+## CommonJS
+
+`CommonJS`的用法与`Node`一样,其实,本来`Node`就是实现的`CommonJS`的模块化规范.对于服务器端到没有什么,对于浏览器端则需要一些特殊的处理  
+
+### 基本语法(用法)
+
+可以说,`CommonJS`的语法与`Node`一模一样,也就`require`,`module`和`exports`这三个关键字,具体内容如下
+
+```JavaScript
+//module1.js
+console.log('module1 is running');
+let name = 'LittleControl'
+exports.name = name
+
+//moduel2.js
+console.log('module2 is running')
+let module1 = require('./module1')
+let website = 'www.littlecontrol.top'
+module.exports = {
+    website: website,
+    getFull() {
+        return module1.name + ' ' + website
+    }
+}
+
+//module3.js
+console.log('module3 is running')
+let module2 = require('./module2')
+let weibo = '@LittleControl'
+module2.exports = {
+    web: weibo + ' ' + module2.getFull()
+}
+
+//app.js
+let module3 = require('./modules/module3')
+console.log(module3.web)
+
+```
+
+最后需要注意的是,浏览器并没有实现`CommonJS`规范,所以我们最后需要将文件打包编译成浏览器认识的规范,这里我们用到的工具叫做`browserify`,在命令行指令命令`npm install browserify -g`后,我们便可以使用这个编译工具.有点幸运的是,我们只需要编译`app.js`这个一个文件就可以,`browserify`会帮我们把其他的工作做的很好,我们至只需要在命令行键入以下命令即可`browserify ./app.js -o ./dist/bundle.js`,这个命令的参数也是通俗易懂,第一个参数为你要编译的文件,也就是主模块文件,然后加一个`-o`表示输出,然后后面的就是你要输出的文件路径及文件名,这里我习惯输出为`build.js`或者`bundle.js`,然后我们只需要在html文件中只引入这一个文件即可,`index.html`中的引入的所有`script`标签就一个足以,`<script src="./js/dist/bundle.js"></script>`,这样就可以了  
+简单来说,就是browserify把所有的模块的内容都帮你整合进了这个`bundle.js`,我们只需要引入这一个文件即可.  
+输出结果
+![CommonJS](https://s2.ax1x.com/2019/09/27/uKFOnf.png)
+
+## ES6
+
+ES6目前应该是公认的最好用的模块化规范了吧,就是纯手动打包的话比较麻烦,结合自动打包工具的话简直不要太爽,虽然,我一个打包工具也不会  
+废话不多说,直接上教程,ES6的模块化规范有几个关键字`export`,`default`和`import..from`.我们从代码里来看这三个关键字怎么用.  
+这次我们把源码写在新目录`/js/src`下面  
+
+```JavaScript
+//module1.js
+/* 单独暴露 */
+//单独使用export的方法我们叫做单独暴露,格式就是 export + value,可以暴露一个任意数值类型的数据
+export function fun1() {
+    console.log('fun1()... module1')
+}
+export function fun2() {
+    console.log('fun2()... module1')
+}
+
+//module2.js
+/* 统一暴露 */
+//这里我们暴露一个对象,而对象里面存放着我们的数据(方法,变量等)
+let fun3 = () => {
+    console.log('fun3()... module2')
+}
+let fun4 = () => {
+    console.log('fun4()... module2')
+}
+
+/* function fun3() {
+    console.log('fun3()... module2')
+}
+
+function fun4() {
+    console.log('fun4()... module2')
+} */
+
+export { fun3, fun4 }
+
+//module3.js
+/* 默认暴露 */
+//这里我们用到了一个关键字default,稍后会在主模块中讲解
+let fun5 = () => {
+    console.log('fun5()... module3')
+}
+let fun6 = () => {
+    console.log('fun6()... module3')
+}
+
+export default { fun6, fun5 }
+
+//main,js
+/* 主模块 */
+/*
+    对于模块1和模块2,并不是想CommonJS那样接受,我们需要用import来导入,并且需要用一个对象来接受
+        需要注意的是,这个对象并不是一般的对象,里面的属性和方法需要与模块暴露出来的一致,否则就无法接受到模块暴露出来的数据
+        对于模块1和模块2的引入方式,对象的写法是ES6的简写方式
+    因为模块3在暴露的时候使用了default关键字,所以可以用一个变量接受模块3的返回值,而这个变量上就会绑定模块3暴露的所有数据
+        我们把使用了default关键字的暴露方式叫做默认暴露
+
+    因为浏览器是不认识import等关键字的,所以需要我们手动编译,这时候需要一个工具,叫做babel
+
+*/
+import { fun1, fun2 } from './module1'
+import { fun3, fun4 } from './module2'
+import module3 from './module3'
+
+fun1()
+fun2()
+fun3()
+fun4()
+module3.fun5()
+module3.fun6()
+
+```
+
+### 编译文件
+
+#### 使用工具babel
+
+1. 运行以下命令安装所需的包（package）
+
+    ```shell
+    npm install -g bable
+    npm install -g bable-cli
+    <!-- 这一部安装很重要 -->
+    npm install babel-preset-es2015 --save-dev
+    ```
+
+2. 在项目的根目录下创建一个名为`.babelrc`的文件,文件内容为
+
+    ```JSON
+    {
+        "presets": ["es2015"]
+    }
+    ```
+
+3. 在命令行键入以下命令`babel ./src -out-dir ./temp`
+
+这样我们便把`src`目录下的所有文件编译到了`temp`目录下  
+然后我们发现就是`temp`目录下的所有文件都其实已经是符合`CommonJS`规范的了,所以我们还需要再利用`browserify`工具进行二次编译  
+键入一下命令`browserify ./temp/main.js -o ./dist/main.js`,这样我们得到了最终可以引入的js文件  
+最后在`index.html`中引入就可以了.  
+输出结果如下
+![ES6模块化](https://s2.ax1x.com/2019/09/27/uK18SK.png)
+总结一下,感觉还是ES6更直观明了一些,但是ES6打包编译实在是太麻烦了,所以后面需要学习自动化构建打包工具,这样就会省事好多.
