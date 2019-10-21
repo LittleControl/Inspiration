@@ -19,3 +19,4 @@
   如果你知道了`mongod`的pid值,那么你也可以使用kill命令来终止`mongod`进程,一般的格式有两个
   `kill <mongod process ID>`或者`kill -2 <mongod process ID>`,这个`mongod process ID`就是`mongod`进程的pid值
   注意!!! 千万不要使用`kill -9`命令来终止`mongod`进程
+  
