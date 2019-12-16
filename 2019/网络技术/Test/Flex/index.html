@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box {
+            display: flex;
+            justify-content: space-around;
+            background-color: #bfa;
+            height: 50px;
+            align-items: center;
+            align-content: space-around;
+        }
+
+        .box div {
+            width: 30px;
+            text-align: center;
+        }
+
+        .item {
+            background-color: deeppink;
+            flex-grow: 2;
+        }
+
+        .item2 {
+            background-color: pink;
+            /* order: -1; */
+        }
+
+        .item3 {
+            background-color: aqua;
+            align-self: flex-end;
+        }
+
+        /* .item:nth-child(odd) {
+            height: 40px;
+            line-height: 3em;
+        } */
+    </style>
+</head>
+
+<body>
+    <br><br><br><br>
+    <div class="box">
+        <div class="item">1</div>
+        <div class="item2">2</div>
+        <div class="item3">3</div>
+        <div class="item2">4</div>
+        <div class="item">5</div>
+    </div>
+</body>
+
+</html>
