@@ -1,0 +1,11 @@
+let e1 = Error('Something is wrong!')
+let e2 = new Error('Something is wrong!')
+// console.log(e1)
+// console.log(e2)
+console.log(e1.name)
+console.log(e1.message)
+console.log(e1.toString())
+
+let e3 = new RangeError()
+console.log(e3 instanceof RangeError)
+console.log(e3)
