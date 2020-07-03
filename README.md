@@ -1,8 +1,6 @@
 # Inspiration
 
 以后我也要每天写博客了,记录一下自己每天的所思所想吧  
-[小控的博客](https://www.littlecontrol.cn)
-(<https://www.littlecontrol.cn>)
 
 ## 关于文档目录的说明
 
@@ -15,3 +13,8 @@
 
 对于我的生活而言没有什么好说的,就是类似于日记,每天记录一下自己的所思所感吧  
 对于网络技术而言,就是对自己某个阶段学到的知识的一个总结,以防日后忘记,也便于复习
+
+## 小控酱的博客地址
+
+- <http://www.littlecontrol.cn>
+- <https://littlecontrol.github.io>
